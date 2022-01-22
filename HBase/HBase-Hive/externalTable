@@ -1,0 +1,57 @@
+
+
+*******************************
+// Using Hue WebUI for Hive 
+*******************************
+
+// get the data from UpGrad's s3 bucket to your bucket
+[root@ip-172-31-93-45 ~]# aws s3://hivedata-bde/Electronics_5.json to s3://abhinav1/tables/Electronics_5.json
+--------------------------------------------------------------------------------------------------------------------------------------
+// create the table
+Hue> create external table if not exists electronics_jsondump_s3 (json_string string) location 's3a://abhinav1/tables';
+--------------------------------------------------------------------------------------------------------------------------------------
+// print top 10 rows to confirm
+Hue> Select * FROM electronics_jsondump_s3 LIMIT 10;
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+[aws]
+[[aws_accounts]]
+[[[default]]]
+access_key_id=AKIAJ4YBBV2QX2J5CRJA
+secret_access_key=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
+region=us-east-1
+
+
+--------------------------------------------------------------------------------------
+hue------------->
+
+Add jar /opt/cloudera/parcels/CDH/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core-1.1.0-cdh5.15.1.jar  
+
+// create a proper table
+
+create external table if not exists electronics_columns_s3(reviewerid string,
+asin string, reviewername string, helpful array<int>, reviewtext string, overall double,
+summary string,
+unixreviewtime bigint) 
+ROW FORMAT SERDE
+'org.apache.hive.hcatalog.data.JsonSerDe'
+with serdeproperties ('paths' = '')
+location 's3a://abhinav1/tables';
+
+--------------------------------------------------------------------------------------------------------
+
+
+create table amazon_hbase(`reviewerid` string, `asin` string, `summary` string)
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,cf1:asin,cf1:summary")
+TBLPROPERTIES ("hbase.table.name" = "amazon_hive");
+
+-------------------------------------------------------------------------------------------------------
+
+select electronics_columns_s3.reviewerid, electronics_columns_s3.asin, electronics_columns_s3.summary from electronics_columns_s3 LIMIT 10;
+---------------------------------------------------------------------------------------------------------------------------------
+Add jar /opt/cloudera/parcels/CDH/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core-1.1.0-cdh5.15.1.jar 
+---------------------------------------------------------------------------------------------------------------------------------
+insert overwrite table amazon_hbase select electronics_columns_s3.reviewerid, electronics_columns_s3.asin, electronics_columns_s3.summary from electronics_columns_s3 LIMIT 10;
+---------------------------------------------------------------------------------------------------------------------------------

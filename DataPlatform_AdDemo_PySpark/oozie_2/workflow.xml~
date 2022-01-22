@@ -1,0 +1,22 @@
+<workflow-app name="sqoop-sample-wf" xmlns="uri:oozie:workflow:0.4">
+    <start to="mysqoopjob"/>
+    <action name="mysqoopjob">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>hdfs://quickstart.cloudera:8032</job-tracker>
+            <name-node>hdfs://quickstart.cloudera:8020</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+		</configuration>
+            <prepare>
+                <delete path="/groceryproduct"/>
+            </prepare>
+            <command>sqoop import --connect jdbc:mysql://quickstart.cloudera:3306/sqoopdemo --username root --password cloudera --table Categories --where "Category = 'Grocery'" --target-dir /groceryproduct</command>
+        </sqoop>
+        <ok to="finish"/>
+        <error to="finish"/>
+    </action>
+    <end name="finish"/>
+</workflow-app>

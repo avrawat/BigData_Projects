@@ -1,0 +1,17 @@
+
+// go to hdfs
+
+sudo su hdfs
+
+// create a dir
+
+hadoop fs -mkdir -p /user/ec2-user
+
+// cahnge permission
+
+[hdfs@ip-172-31-35-230 ~]$ hadoop fs -chown ec2-user /user/ec2-user
+[hdfs@ip-172-31-35-230 ~]$ hadoop fs -chmod 777 /user/ec2-user
+
+
+// transfer files
+[ec2-user@ip-172-31-35-230 oct1]$ hadoop fs -put movies.txt /user/ec2-user/input

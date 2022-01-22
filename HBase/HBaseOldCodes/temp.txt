@@ -1,0 +1,15 @@
+$scp -i ~/Desktop/amazon.pem ~/Desktop/MS115.fa  ubuntu@ec2-54-166-128-20.compute-1.amazonaws.com:~/data/
+
+
+scp - i ~/Spark_Abhinav/Spark_Abhinav.pem ~/Spark_Abhinav/MyFirstHBaseTable.java  
+
+
+
+// files to ec2-user home directory
+
+scp -i ~/Spark_Abhinav/spark_abhinav.pem ~/Spark_Abhinav/MyFirstHBaseTable.java ec2-user@ec2-54-165-148-233.compute-1.amazonaws.com:~/codes/
+
+
+
+
+

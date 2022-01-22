@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow-app xmlns="uri:oozie:workflow:0.5" name="C3_Demo_Wf">
+   <start to="fork_import_table_data_and_process_logs" />
+   <fork name="fork_import_table_data_and_process_logs">
+      <path start="customers_import" />
+      <path start="products_import" />
+      <path start="orders_import" />
+   </fork>
+   <action name="customers_import">
+      <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+         <job-tracker>${jobTracker}</job-tracker>
+         <name-node>${nameNode}</name-node>
+         <job-xml>sqoop-site.xml</job-xml>
+         <configuration>
+            <property>
+               <name>fs.hdfs.impl.disable.cache</name>
+               <value>true</value>
+            </property>
+            <property>
+               <name>mapred.job.queue.name</name>
+               <value>default</value>
+            </property>
+         </configuration>
+         <command>job -exec customers_import --meta-connect jdbc:hsqldb:hsql://ip-172-31-45-59.ec2.internal:16000/sqoop</command>
+      </sqoop>
+      <ok to="join_node" />
+      <error to="Kill_c3_demo_wf" />
+   </action>
+   <action name="products_import">
+      <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+         <job-tracker>${jobTracker}</job-tracker>
+         <name-node>${nameNode}</name-node>
+         <job-xml>sqoop-site.xml</job-xml>
+         <configuration>
+            <property>
+               <name>fs.hdfs.impl.disable.cache</name>
+               <value>true</value>
+            </property>
+            <property>
+               <name>mapred.job.queue.name</name>
+               <value>default</value>
+            </property>
+         </configuration>
+         <command>job -exec products_import --meta-connect jdbc:hsqldb:hsql://ip-172-31-45-59.ec2.internal:16000/sqoop</command>
+      </sqoop>
+      <ok to="join_node" />
+      <error to="Kill_c3_demo_wf" />
+   </action>
+   <action name="orders_import">
+      <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+         <job-tracker>${jobTracker}</job-tracker>
+         <name-node>${nameNode}</name-node>
+         <job-xml>sqoop-site.xml</job-xml>
+         <configuration>
+            <property>
+               <name>fs.hdfs.impl.disable.cache</name>
+               <value>true</value>
+            </property>
+            <property>
+               <name>mapred.job.queue.name</name>
+               <value>default</value>
+            </property>
+         </configuration>
+         <command>job -exec orders_import --meta-connect jdbc:hsqldb:hsql://ip-172-31-45-59.ec2.internal:16000/sqoop</command>
+      </sqoop>
+      <ok to="join_node" />
+      <error to="Kill_c3_demo_wf" />
+   </action>
+   <join name="join_node" to="transform_and_load" />
+   <fork name="transform_and_load">
+      <path start="copy_data" />
+      <path start="process_logs" />
+   </fork>
+   <action name="copy_data">
+      <distcp xmlns="uri:oozie:distcp-action:0.2">
+         <job-tracker>${jobTracker}</job-tracker>
+         <name-node>${nameNode}</name-node>
+         <arg>${nameNode}/user/ec2-user/raw/mysql/*</arg>
+         <arg>${nameNode}/user/ec2-user/datawarehouse/</arg>
+      </distcp>
+      <ok to="join_copy_node" />
+      <error to="join_copy_node" />
+   </action>
+   <action name="process_logs">
+      <spark xmlns="uri:oozie:spark-action:0.1">
+         <job-tracker>${jobTracker}</job-tracker>
+         <name-node>${nameNode}</name-node>
+         <master>${master}</master>
+         <name>PySpark_Oozie_log_processing</name>
+         <jar>lib/pyspark2.py</jar>
+      </spark>
+      <ok to="join_copy_node" />
+      <error to="join_copy_node" />
+   </action>
+   <join name="join_copy_node" to="finish" />
+   <kill name="Kill_c3_demo_wf">
+      <message>Error importing tables</message>
+   </kill>
+   <end name="finish" />
+</workflow-app>

@@ -1,0 +1,55 @@
+install pheonix on cdh.
+
+https://khodeprasad.wordpress.com/2015/10/14/configuring-apache-phoenix-in-cdh-5-4-3-using-cloudera-manager/
+
+
+
+
+1. Login to Cloudera Manager, click on Hosts, then Parcels.
+
+2.  click on configuration./top right
+
+3. Click the + sign next to an existing Remote Parcel Repository URL, and add the URL:
+
+ http://archive.cloudera.com/cloudera-labs/phoenix/parcels/latest/ 
+
+4. Click Save Changes.
+
+
+5. Select Hosts, then Parcels.
+
+6. In the list of Parcel Names, CLABS_PHOENIX is now available. Select it and choose Download.
+7. The first cluster is selected by default. To choose a different cluster for distribution, select it. Find CLABS_PHOENIX in the list, and click Distribute.
+
+
+8. If you to use secondary indexing, add the following to the hbase-site.xml advanced configuration snippet. Go to the HBase service, click Configuration, and choose/search for 
+
+HBase Service Advanced Configuration Snippet (Safety Valve) for hbase-site.xml. 
+
+
+Paste in the following XML, then save the changes.
+
+	<property>
+		<name>hbase.regionserver.wal.codec</name>
+		<value>org.apache.hadoop.hbase.regionserver.wal.IndexedWALEditCodec</value>
+	</property>
+
+
+8. Restart the HBase service.
+
+
+Prerequisites
+Before using the Phoenix utilities, set the JAVA_HOME environment variable in your terminal session, and ensure that the java executable is in your path. Adjust the following commands to your operating system’s configuration.
+
+$ export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera
+$ export PATH=$PATH:$JAVA_HOME/bin
+
+
+then go to putty.
+
+[ec2-user@ip-172-31-82-152 ~]$ phoenix-sqlline.py localhost:2181
+
+
+CREATE TABLE IF NOT EXISTS us_population (state CHAR(2) NOT NULL, city VARCHAR NOT NULL, population BIGINT  CONSTRAINT my_pk PRIMARY KEY (state, city));
+No rows affected (1.248 seconds)
+0: jdbc:phoenix:localhost:2181> !table

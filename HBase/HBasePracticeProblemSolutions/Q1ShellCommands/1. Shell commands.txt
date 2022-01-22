@@ -1,0 +1,113 @@
+
+create 'mobile_subscribers','personal_details','plan_details'
+alter 'mobile_subscribers', NAME=>'personal_details', VERSIONS=>2
+alter 'mobile_subscribers', NAME=>'plan_details', VERSIONS=>5
+
+Q1)
+
+put 'mobile_subscribers','7007989009','personal_details:name','Rahul'
+put 'mobile_subscribers','7007989009','personal_details:document_type','Aadhar'
+put 'mobile_subscribers','7007989009','personal_details:document_number','100934561234'
+put 'mobile_subscribers','7007989009','plan_details:call_plan','149'
+put 'mobile_subscribers','7007989009','plan_details:data_plan','399'
+
+
+put 'mobile_subscribers','8965969019','personal_details:name','Sonia'
+put 'mobile_subscribers','8965969019','personal_details:document_type','Aadhar'
+put 'mobile_subscribers','8965969019','personal_details:document_number','232934568901'
+put 'mobile_subscribers','8965969019','plan_details:data_plan','499'
+
+put 'mobile_subscribers','98745654312','personal_details:name','Hemraj'
+put 'mobile_subscribers','98745654312','personal_details:document_type','Passport'
+put 'mobile_subscribers','98745654312','personal_details:document_number','HJ128MN'
+put 'mobile_subscribers','98745654312','plan_details:call_plan','81'
+
+
+
+put 'mobile_subscribers','98745654311','personal_details:name','Shalini'
+put 'mobile_subscribers','98745654311','personal_details:document_type','Passport'
+put 'mobile_subscribers','98745654311','personal_details:document_number','HJ128MN'
+put 'mobile_subscribers','98745654311','plan_details:call_plan','169'
+put 'mobile_subscribers','98745654311','plan_details:data_plan','399'
+
+
+
+
+Q2)
+
+
+1. 
+
+put 'mobile_subscribers','7007989009','plan_details:call_plan','0'
+get 'mobile_subscribers','7007989009',{COLUMN => 'plan_details:call_plan',VERSIONS=>2}
+
+2. 
+put 'mobile_subscribers','8965969019','plan_details:data_plan','599'
+get 'mobile_subscribers','8965969019',{COLUMN => 'plan_details:data_plan',VERSIONS=>2} 
+
+3. 
+put 'mobile_subscribers','98745654312','plan_details:data_plan','1099'
+get 'mobile_subscribers','98745654312',{COLUMN => 'plan_details:data_plan',VERSIONS=>2} 
+
+4. 
+put 'mobile_subscribers','98745654311','personal_details:document_type','Aadhar'
+get 'mobile_subscribers','98745654311',{COLUMN => 'personal_details:document_type',VERSIONS=>2}
+
+put 'mobile_subscribers','98745654311','personal_details:document_number','134267541235'
+get 'mobile_subscribers','98745654311',{COLUMN => 'personal_details:document_number',VERSIONS=>2}
+
+
+
+Q3)
+
+1.
+scan 'mobile_subscribers',{FILTER=>"ValueFilter(=,'binary:Aadhar')"}
+
+2. 
+scan 'mobile_subscribers',{FILTER=>"ValueFilter(=,'binary:Passport')"}
+
+3.
+ scan 'mobile_subscribers', {FILTER => "QualifierFilter(=, 'substring:name')"}
+
+4. 
+scan 'mobile_subscribers', {FILTER => "FamilyFilter(=, 'substring:plan_details')"}
+
+
+
+******************** you need specify "your" timestamps ************************************************
+
+Q4)
+1.
+ scan 'mobile_subscribers', {FILTER => "QualifierFilter(=, 'substring:data_plan')" , VERSIONS=>2}
+
+2.
+ scan 'mobile_subscribers', {FILTER => "QualifierFilter(=, 'substring:call_plan')" , VERSIONS=>2}
+
+3.
+get 'mobile_subscribers','7007989009',{COLUMN => 'plan_details:call_plan',TIMESTAMP=>1541050375979}
+
+4.
+get 'mobile_subscribers','8965969019',{COLUMN => 'plan_details:data_plan',TIMESTAMP=>1541050408059}
+
+5. 
+get 'mobile_subscribers','98745654312',{COLUMN => 'plan_details:data_plan',TIMESTAMP=>1541054314085}
+
+6.
+get 'mobile_subscribers','98745654311',{COLUMN => 'personal_details:document_type',TIMESTAMP=>1541050448326}
+
+
+Q5)
+
+1.
+delete 'mobile_subscribers','7007989009', 'plan_details:call_plan',1541050375979
+
+2.
+delete 'mobile_subscribers','8965969019', 'plan_details:data_plan',1541050408059
+
+3.
+delete 'mobile_subscribers','98745654312', 'plan_details:data_plan',1541054314085
+
+4. 
+delete 'mobile_subscribers','98745654311','personal_details:document_type',1541050448326
+
+

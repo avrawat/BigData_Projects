@@ -1,0 +1,60 @@
+//hbase-site.xml
+
+<configuration>
+<property>
+   <name>hbase.rootdir</name>
+   <value>file:///home/ec2-user/HbaseData</value>
+ </property>
+</configuration>
+
+
+// bin --> file name - hbase-add
+
+for f in /home/ec2-user/spark/jars/*.jar; do
+   CLASSPATH=${CLASSPATH}:$f;
+ done
+
+
+
+// cdh spark libs path
+
+/opt/cloudera/parcels/SPARK2-2.3.0.cloudera2-1.cdh5.13.3.p0.316101/lib/spark2/jars
+
+
+
+
+ // example.java file
+
+ /home/ec2-user/hbase/hbase-spark/src/main/java/org/apache/hadoop/hbase/spark/example/hbasecontext
+
+SparkConf sparkConf = new SparkConf().setAppName("JavaHBaseBulkPutExample " + tableName)
+                       .setMaster("local[2]")
+                               .set("spark.executor.memory", "1g
+
+
+
+// for new zookeeper port (removed worked)
+
+<property>
+    <name>hbase.zookeeper.property.clientPort</name>
+    <value>2184</value>
+    <description>Property from ZooKeeper's config zoo.cfg.
+    The port at which the clients will connect.</description>
+  </property>
+
+
+/// error
+
+
+hbase(main):001:0> list
+TABLE                                                                     
+
+ERROR: KeeperErrorCode = NoNode for /hbase/master
+
+For usage try 'help "list"'
+
+Took 8.4608 seconds     
+
+
+// restart hbase cluster
+

@@ -1,0 +1,160 @@
+ hbase version
+
+ 
+git clone https://github.com/apache/hbase/
+sudo yum install git
+git clone https://github.com/apache/hbase/
+ls
+cd hbase/
+ ls
+ git branch
+mvn
+  cd
+  148  wget http://www-us.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+  149  tar -xvf apache-maven-3.5.4-bin.tar.gz 
+
+  152  cd hbase/
+  153  ls
+
+  156  export PATH=$PATH:/home/ec2-user/apache-maven-3.5.4/bin
+  157  mvn
+  158  mvn -DskipTests=true package assembly:single
+  159  ls
+  160  cd hbase-assembly/
+  161  ls
+  162  cd target/
+  163  ls
+  164  cp hbase-3.0.0-SNAPSHOT-bin.tar.gz /home/ec2-user
+  165  cd
+  166  ls
+  167  tar -xvf hbase-3.0.0-SNAPSHOT-bin.tar.gz
+  168  ls
+  169  cd hbase-3.0.0-SNAPSHOT
+  170  ls
+  171  cd conf/
+  172  ls
+  173  vim hbase-site.xml 
+  174  cd ./..
+  175  ls
+  176  cd bin/
+  177  ls
+  178  pwd
+  179  ./start-hbase.sh
+  180  ls
+  181  vim hbase
+  182  ./hbase shell
+  183  ./hbase org.apache.hadoop.hbase.spark.example.hbasecontext.JavaHBaseBulkPutExample t1 cf1
+  184  cd
+  185  ls
+  186  cd hbase
+  187  ls
+  188  cd hbase-spark
+  189  ls
+  190  cd src/
+  191  ls
+  192  cd main/
+  193  ls
+  194  cd java
+  195  ls
+  196  cd org
+  197  ls
+  198  cd apache/
+  199  ls
+  200  cd hadoop/
+  201  ls
+  202  cd hbase/
+  203  ls
+  204  cd spark/
+  205  ls
+  206  cd example/hbasecontext/
+  207  ls
+  208  vim JavaHBaseBulkPutExample.java
+  209  cd'
+  210  cd
+  211  ls
+  212  cd hbase/
+  213  ls
+  214  cd hbase-spark
+  215  mvn -DskipTests=true install
+  216  cd ./..
+  217  mvn -DskipTests=true install
+  218  cd hbase-spark
+  219  ls
+  220  cd target/
+  221  ls
+  222  cp hbase-spark-3.0.0-SNAPSHOT.jar /home/ec2-user/hbase-3.0.0-SNAPSHOT/lib/
+  223  cd /home/ec2-user/hbase-3.0.0-SNAPSHOT/lib/
+  224  ls
+  225  cd  ./..
+  226  ls
+  227  cd bin/
+  228  ls
+  229  ./hbase org.apache.hadoop.hbase.spark.example.hbasecontext.JavaHBaseBulkPutExample t1 cf1
+  230  cd
+  231  wget wget https://archive.apache.org/dist/spark/spark-2.1.1/spark-2.1.1-bin-hadoop2.7.tgz
+  232  tar -xvf spark-2.1.1-bin-hadoop2.7.tgz
+  233  ls
+  234  cd spark-2.1.1-bin-hadoop2.7
+  235  ls
+  236  cd
+  237  ln -s spark-2.1.1-bin-hadoop2.7 spark
+
+  238  SPARK_HOME=/home/ec2-user/spark
+  239  export PATH=$SPARK_HOME/bin:$PATH
+  240  spark-shell
+  241  ls
+  242  cd spar
+  243  cd spark
+  244  ls
+  245  cd
+  246  cd spark
+  247  saprk-shell
+  248  spark-shell
+  249  history
+
+
+///////////file 2
+
+
+
+  138  spark2-shell
+  139  cd /opt/cloudera/parcels/SPARK2/lib/spark2/jars
+  140  ls
+  141  pwd
+  142  cd
+  143  spark2-shell
+  144  cd hbase-3.0.0-SNAPSHOT
+  145  ls
+  146  cd bin
+  147  ./hbase org.apache.hadoop.hbase.spark.example.hbasecontext.JavaHBaseBulkPutExample t1 cf1
+  148  cd hbase
+  149  cd
+  150  cd hbase-3.0.0-SNAPSHOT
+  151  ls
+  152  cd bin
+  153  ls
+  154  vim hbase
+  155  cd ./..
+  156  cd bin/
+  157  ls
+  158  ./hbase org.apache.hadoop.hbase.spark.example.hbasecontext.JavaHBaseBulkPutExample t1 cf1
+  159  ./hbase shell
+  160  cd
+  161  ls
+  162  cd
+  163  cd hbase
+  164  ls
+  165  cd target/
+  166  ls
+  167  cd ./..
+  168  cd hbase-assembly/
+  169  ls
+  170  cd
+  171  cd hbase
+  172  ls
+  173  cd hbase-spark
+  174  ls
+  175  cat README.txt 
+  176  cd
+  177  ls
+  178  history

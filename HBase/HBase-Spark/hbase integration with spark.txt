@@ -1,0 +1,281 @@
+----------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 ~]$sudo yum -y install git
+[ec2-user@ip-172-31-93-45 ~]$ ls
+hbase  manisaavn.jar  pig_1534232426061.log  saavn.jar  saavnJob.jar  saavnproject.jar
+------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 ~]$ cd hbase/
+[ec2-user@ip-172-31-93-45 hbase]$ ls
+bin                hbase-assembly             hbase-common               hbase-http           hbase-procedure        hbase-rsgroup   hbase-testing-util  README.txt
+CHANGES.txt        hbase-backup               hbase-endpoint             hbase-it             hbase-protocol         hbase-server    hbase-thrift        src
+conf               hbase-build-configuration  hbase-examples             hbase-mapreduce      hbase-protocol-shaded  hbase-shaded    hbase-zookeeper
+dev-support        hbase-build-support        hbase-external-blockcache  hbase-metrics        hbase-replication      hbase-shell     LICENSE.txt
+hbase-annotations  hbase-checkstyle           hbase-hadoop2-compat       hbase-metrics-api    hbase-resource-bundle  hbase-spark     NOTICE.txt
+hbase-archetypes   hbase-client               hbase-hadoop-compat        hbase-native-client  hbase-rest             hbase-spark-it  pom.xml
+
+--------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 hbase]$ git clone https://github.com/apache/hbase/
+--------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 hbase]$ git branch
+* master
+[ec2-user@ip-172-31-93-45 hbase]$
+----------------------------------------------------------
+[ec2-user@ip-172-31-93-45 hbase]$ mvn
+-bash: mvn: command not found
+-------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 hbase]$ cd
+[ec2-user@ip-172-31-93-45 ~]$ wget http://www-us.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+--2018-10-05 06:56:47--  http://www-us.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+Resolving www-us.apache.org (www-us.apache.org)... 40.79.78.1
+Connecting to www-us.apache.org (www-us.apache.org)|40.79.78.1|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 8842660 (8.4M) [application/x-gzip]
+Saving to: ‘apache-maven-3.5.4-bin.tar.gz’
+
+100%[==============================================================================================================================>] 8,842,660   --.-K/s   in 0.09s
+
+2018-10-05 06:56:48 (89.2 MB/s) - ‘apache-maven-3.5.4-bin.tar.gz’ saved [8842660/8842660]
+
+[ec2-user@ip-172-31-93-45 ~]$ tar -zxvf apache-maven-3.5.4-bin.tar.gz
+
+-------------------------------------------
+
+[ec2-user@ip-172-31-93-45 ~]$ export PATH=$PATH:/home/ec2-user/apache-maven-3.5.4/bin
+---------------------------------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 ~]$ mvn
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 0.130 s
+[INFO] Finished at: 2018-10-05T06:59:37Z
+[INFO] ------------------------------------------------------------------------
+[ERROR] No goals have been specified for this build. You must specify a valid lifecycle phase or a goal in the format <plugin-prefix>:<goal> or <plugin-group-id>:<plugin-artifact-id>[:<plugin-version>]:<goal>. Available lifecycle phases are: validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy, pre-clean, clean, post-clean, pre-site, site, post-site, site-deploy. -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/NoGoalSpecifiedException
+[ec2-user@ip-172-31-93-45 ~]$
+---------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 ~]$ cd hbase
+[ec2-user@ip-172-31-93-45 hbase]$ mvn -DskipTests=true package assembly:single
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 07:31 min
+[INFO] Finished at: 2018-10-05T07:14:05Z
+------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 hbase]$ cd hbase-assembly/
+[ec2-user@ip-172-31-93-45 hbase-assembly]$ cd target/
+[ec2-user@ip-172-31-93-45 target]$ ls
+archive-tmp  dependency-maven-plugin-markers  hbase-3.0.0-SNAPSHOT-client-bin.tar.gz  NOTICE.aggregate
+dependency   hbase-3.0.0-SNAPSHOT-bin.tar.gz  maven-shared-archive-resources          supplemental-models.xml
+----------------------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 target]$ cp hbase-3.0.0-SNAPSHOT-bin.tar.gz /home/ec2-user/
+[ec2-user@ip-172-31-93-45 target]$ cd
+[ec2-user@ip-172-31-93-45 ~]$ ls
+apache-maven-3.5.4             hbase                            manisaavn.jar          saavn.jar     saavnproject.jar
+apache-maven-3.5.4-bin.tar.gz  hbase-3.0.0-SNAPSHOT-bin.tar.gz  pig_1534232426061.log  saavnJob.jar
+-------------------------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 ~]$ tar -xvf hbase-3.0.0-SNAPSHOT-bin.tar.gz
+-----------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 ~]$ mkdir HbaseData
+[ec2-user@ip-172-31-93-45 ~]$
+---------------------------------------------------------------------------------
+
+[ec2-user@ip-172-31-93-45 ~]$ cd hbase-3.0.0-SNAPSHOT
+[ec2-user@ip-172-31-93-45 hbase-3.0.0-SNAPSHOT]$ ls
+bin  conf  hbase-webapps  LEGAL  lib  LICENSE.txt  NOTICE.txt  README.txt
+[ec2-user@ip-172-31-93-45 hbase-3.0.0-SNAPSHOT]$ cd conf/
+[ec2-user@ip-172-31-93-45 conf]$ ls
+hadoop-metrics2-hbase.properties  hbase-env.cmd  hbase-env.sh  hbase-policy.xml  hbase-site.xml  log4j.properties  regionservers
+[ec2-user@ip-172-31-93-45 conf]$
+----------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 conf]$ vi hbase-site.xml
+
+<configuration>
+<property>
+   <name>hbase.rootdir</name>
+   <value>file:///home/ec2-user/HbaseData</value>
+ </property>
+</configuration>
+
+
+--------------------------------------------------------------------
+
+[ec2-user@ip-172-31-93-45 conf]$ cd ./..
+[ec2-user@ip-172-31-93-45 hbase-3.0.0-SNAPSHOT]$ ls
+bin  conf  hbase-webapps  LEGAL  lib  LICENSE.txt  NOTICE.txt  README.txt
+[ec2-user@ip-172-31-93-45 hbase-3.0.0-SNAPSHOT]$ cd bin/
+[ec2-user@ip-172-31-93-45 bin]$ ./start-hbase.sh
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/cloudera/parcels/CDH-5.15.0-1.cdh5.15.0.p0.21/jars/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/ec2-user/hbase-3.0.0-SNAPSHOT/lib/client-facing-thirdparty/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+running master, logging to /home/ec2-user/hbase-3.0.0-SNAPSHOT/bin/../logs/hbase-ec2-user-master-ip-172-31-93-45.ec2.internal.out
+-------------------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 bin]$ ./hbase shell
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/cloudera/parcels/CDH-5.15.0-1.cdh5.15.0.p0.21/jars/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/ec2-user/hbase-3.0.0-SNAPSHOT/lib/client-facing-thirdparty/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+HBase Shell
+Use "help" to get list of supported commands.
+Use "exit" to quit this interactive shell.
+For Reference, please visit: http://hbase.apache.org/book.html#shell
+Version 3.0.0-SNAPSHOT, re42741e0858a59961ae0900b5ef073e16ef6126c, Fri Oct  5 07:07:35 UTC 2018
+Took 0.0942 seconds
+hbase(main):001:0> list
+TABLE
+
+ERROR: KeeperErrorCode = NoNode for /hbase/master
+
+For usage try 'help "list"'
+
+hbase(main):003:0* exit
+[ec2-user@ip-172-31-93-45 bin]$vim hbase      //line number 284 par add karo neeche
+or f in /home/ec2-user/spark/jars/*.jar; do
+   CLASSPATH=${CLASSPATH}:$f;
+ done
+----------------------------------------------------------------------------------------------------------------------------------
+ [ec2-user@ip-172-31-93-45 bin]$ cd
+[ec2-user@ip-172-31-93-45 ~]$ cd /home/ec2-user/hbase/hbase-spark/src/main/java/org/apache/hadoop/hbase/spark/example/hbasecontext
+[ec2-user@ip-172-31-93-45 hbasecontext]$ ls
+JavaHBaseBulkDeleteExample.java  JavaHBaseBulkLoadExample.java  JavaHBaseDistributedScan.java   JavaHBaseStreamingBulkPutExample.java
+JavaHBaseBulkGetExample.java     JavaHBaseBulkPutExample.java   JavaHBaseMapGetPutExample.java
+[ec2-user@ip-172-31-93-45 hbasecontext]$
+
+---------------------------------------------------------
+
+[ec2-user@ip-172-31-93-45 hbasecontext]$ vi JavaHBaseBulkPutExample.java       //line no 52 ko // comment karo do then paste bwlow line
+
+SparkConf sparkConf = new SparkConf().setAppName("JavaHBaseBulkPutExample " + tableName)
+                       .setMaster("local[2]")
+                               .set("spark.executor.memory", "1g"
+---------------------------
+
+[ec2-user@ip-172-31-93-45 hbasecontext]$ cd
+[ec2-user@ip-172-31-93-45 ~]$ cd hbase-3.0.0-SNAPSHOT/bin/
+[ec2-user@ip-172-31-93-45 bin]$ ls
+considerAsDead.sh     hbase             hbase-config.cmd  hbase-jruby             master-backup.sh  replication               start-hbase.sh  zookeepers.sh
+draining_servers.rb   hbase-cleanup.sh  hbase-config.sh   hirb.rb                 region_mover.rb   rolling-restart.sh        stop-hbase.cmd
+get-active-master.rb  hbase.cmd         hbase-daemon.sh   local-master-backup.sh  regionservers.sh  shutdown_regionserver.rb  stop-hbase.sh
+graceful_stop.sh      hbase-common.sh   hbase-daemons.sh  local-regionservers.sh  region_status.rb  start-hbase.cmd           test
+[ec2-user@ip-172-31-93-45 bin]$ ./hbase shell
+							   
+							   
+
+--------------------------------------------- Rawat --------------------------------------------------------------------------------
+
+hbase(main):001:0> create 'table1' , 'cf1'
+Created table table1
+Took 4.6394 seconds                                                                                                                                   
+=> Hbase::Table - table1
+--------------------------------------------------------
+
+hbase(main):001:0> exit
+------------------------------------------------
+[ec2-user@ip-172-31-93-45 bin]$ cd /home/ec2-user/hbase/hbase-spark/src/main/java/org/apache/hadoop/hbase/spark/example/hbasecontext
+--------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 hbasecontext]$ vi JavaHBaseBulkPutExample.java       //line no 52 ko // comment karo do then paste bwlow line
+
+SparkConf sparkConf = new SparkConf().setAppName("JavaHBaseBulkPutExample " + tableName)
+                       .setMaster("local[2]")
+                               .set("spark.executor.memory", "1g");
+------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 bin]$ vim hbase      //line number 284 par add karo neeche
+for f in /opt/cloudera/parcels/SPARK2-2.3.0.cloudera2-1.cdh5.13.3.p0.316101/lib/spark2/jars/*.jar; do
+   CLASSPATH=${CLASSPATH}:$f;
+ done
+
+---------------------------------------------------------------------------------------------------
+
+[ec2-user@ip-172-31-91-254 hbase]$  mvn -DskipTests=true install // recompile the hase-spark module (to be able to run that example)
+
+ [ec2-user@ip-172-31-91-254 target]$  cd /home/ec2-user/hbase/hbase-spark/target
+
+ [ec2-user@ip-172-31-91-254 target]$ cp hbase-spark-3.0.0-SNAPSHOT.jar /home/ec2-user/hbase-3.0.0-SNAPSHOT/lib/
+
+------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------------------------------------------------
+******************************************************************************************************
+Adding Spark 2.1.1
+
+  [ec2-user@ip-172-31-91-254 ~]$   wget https://archive.apache.org/dist/spark/spark-2.1.1/spark-2.1.1-bin-hadoop2.7.tgz
+  [ec2-user@ip-172-31-91-254 ~]$   tar -xvf spark-2.1.1-bin-hadoop2.7.tgz
+---------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-91-254 bin]$ cd hbase-3.0.0-SNAPSHOT/bin
+--------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-91-254 bin]$ vim hbase
+
+//line number-284 add this
+
+for f in /home/ec2-user/spark/jars/*.jar; do
+   CLASSPATH=${CLASSPATH}:$f;
+ done
+
+---------------------------------------------------------
+  [ec2-user@ip-172-31-91-254 ~]$ ln -s spark-2.1.1-bin-hadoop2.7 spark	   
+  --------------------------------------------------
+
+
+******************************************************
+in another tab- open spark shell
+
+ [ec2-user@ip-172-31-91-254 ~]$ SPARK_HOME=/home/ec2-user/spark
+ [ec2-user@ip-172-31-91-254 ~]$ export PATH=$SPARK_HOME/bin:$PATH
+
+[ec2-user@ip-172-31-91-254 ~]$ spark-shell
+
+
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 2.1.1
+      /_/
+         
+Using Scala version 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_161)
+
+---------------------------------------------------------
+********************************************************************
+
+hbase wala tab
+
+ run the code
+
+ [ec2-user@ip-172-31-91-254 bin]$ ./hbase org.apache.hadoop.hbase.spark.example.hbasecontext.JavaHBaseBulkPutExample t1 cf1
+
+
+---------------------------------------------------------------------------
+
+Every time you log in
+
+SPARK_HOME=/home/ec2-user/spark
+export PATH=$SPARK_HOME/bin:$PATH
+
+
+
+-----------------------------------------------------------------------------------
+
+
+
+ cp ~/HBaseSpark/SparkHBase-0.0.1-SNAPSHOT.jar ~/hbase-3.0.0-SNAPSHOT/lib
+./hbase hbark.Driver abhinav rawat
+
+
+
+nc -vz localhost 2181
+
+
+2018-10-19 10:42:34,988 INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181] server.ZooKeeperServer: Refusing session request for client /0:0:0:0:0:0:0:1:43178 as it has seen zxid 0x88 our last zxid is 0x2 client must try another server
+
+

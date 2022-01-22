@@ -1,0 +1,109 @@
+AMazon linux comminity m select kare.
+ami-05ab23d5e0ae2bf91 
+
+
+
+
+t2.medium
+ 
+ 
+yum -y install git
+yum install -y wget
+wget https://s3.amazonaws.com/java-1.8/jdk-8u161-linux-x64.tar.gz
+mkdir /usr/java/
+tar zxvf jdk-8u161-linux-x64.tar.gz -C /usr/java/
+vi /etc/profile
+export JAVA_HOME=/usr/java/jdk1.8.0_161/
+export JRE_HOME=/usr/java/jdk1.8.0_161/jre
+export PATH=$JAVA_HOME/bin:$PATH
+
+exit
+
+
+wget http://www-us.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+
+tar -zxvf apache-maven-3.5.4-bin.tar.gz
+
+export PATH=$PATH:/home/ec2-user/apache-maven-3.5.4/bin
+
+git clone https://github.com/apache/hbase/
+
+cd hbase
+-------------------------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 hbase]$ 
+-------------------------------------------------------------------------------------------------------------------------
+
+mvn -DskipTests=true package assembly:single
+
+cp hbase-assembly/target/hbase-3.0.0-SNAPSHOT-bin.tar.gz /home/ec2-user/
+
+cd
+-------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 ~]$ 
+-------------------------------------------------------------------------------------------------------------------------
+
+ls  
+
+tar -xvf hbase-3.0.0-SNAPSHOT-bin.tar.gz
+
+mkdir HbaseData
+
+vi hbase-3.0.0-SNAPSHOT/conf/hbase-site.xml
+
+***************************************************************
+
+<configuration>
+<property>
+   <name>hbase.rootdir</name>
+   <value>file:///home/ec2-user/HbaseData</value>
+ </property>
+</configuration>
+
+***************************************************************
+
+
+cd hbase-3.0.0-SNAPSHOT/bin
+
+-------------------------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 bin]$ 
+-------------------------------------------------------------------------------------------------------------------------
+
+./start-hbase.sh
+jps
+
+./hbase shell
+
+-------------------------------------------------------------------------------------------------------------------
+
+***************************************************Add Spark********************************************************
+
+-------------------------------------------------------------------------------------------------------------------------
+[ec2-user@ip-172-31-93-45 ~]$ 
+-------------------------------------------------------------------------------------------------------------------------
+
+wget https://archive.apache.org/dist/spark/spark-2.1.1/spark-2.1.1-bin-hadoop2.7.tgz
+
+tar -xvf spark-2.1.1-bin-hadoop2.7.tgz
+
+ln -s spark-2.1.1-bin-hadoop2.7 spark
+
+vi hbase-3.0.0-SNAPSHOT/bin/hbase
+
+
+********************************** //line number 284 add this *********************************************
+
+
+for f in /home/ec2-user/spark/jars/*.jar; do
+   CLASSPATH=${CLASSPATH}:$f;
+ done
+
+
+****************************************************************************************
+
+SPARK_HOME=/home/ec2-user/spark
+export PATH=$SPARK_HOME/bin:$PATH

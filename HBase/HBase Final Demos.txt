@@ -1,0 +1,115 @@
+// HBase Final Demos
+
+[ec2-user@ip-172-31-35-230 bulkloadOct13]$ ls
+AirBulkload-0.0.1-SNAPSHOT.jar  AirLineData.csv
+[ec2-user@ip-172-31-35-230 bulkloadOct13]$ HADOOP_CLASSPATH=`hbase classpath` hadoop jar AirBulkload-0.0.1-SNAPSHOT.jar bulkload.Driver /user/ec2-user/input2 /user/ec2-user/airOP air01
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+hbase(main):002:0> count 'air01'
+Current count: 1000, row: ARY04F10898                                                                                                                                                                              
+Current count: 2000, row: ARY04F11798                                                                                                                                                                              
+Current count: 3000, row: ARY04F12698                                                                                                                                                                              
+Current count: 4000, row: ARY04F13598                                                                                                                                                                              
+Current count: 5000, row: ARY04F14498                                                                                                                                                                              
+Current count: 6000, row: ARY04F15398                                                                                                                                                                              
+Current count: 7000, row: ARY04F16298                                                                                                                                                                              
+Current count: 8000, row: ARY04F17198                                                                                                                                                                              
+Current count: 9000, row: ARY04F18098                                                                                                                                                                              
+Current count: 10000, row: ARY04F18999                                                                                                                                                                             
+Current count: 11000, row: ARY04F19899                                                                                                                                                                             
+Current count: 12000, row: ARY04F2798                                                                                                                                                                              
+Current count: 13000, row: ARY04F3698                                                                                                                                                                              
+Current count: 14000, row: ARY04F4598                                                                                                                                                                              
+Current count: 15000, row: ARY04F5498                                                                                                                                                                              
+Current count: 16000, row: ARY04F6398                                                                                                                                                                              
+Current count: 17000, row: ARY04F7298                                                                                                                                                                              
+Current count: 18000, row: ARY04F8198                                                                                                                                                                              
+Current count: 19000, row: ARY04F9098                                                                                                                                                                              
+Current count: 20000, row: ARY04F9999                                                                                                                                                                              
+Current count: 21000, row: ARY05F21000                                                                                                                                                                             
+Current count: 22000, row: ARY05F22000                                                                                                                                                                             
+Current count: 23000, row: ARY05F23000                                                                                                                                                                             
+Current count: 24000, row: ARY05F24000                                                                                                                                                                             
+Current count: 25000, row: ARY05F25000                                                                                                                                                                             
+Current count: 26000, row: ARY05F26000                                                                                                                                                                             
+Current count: 27000, row: ARY05F27000                                                                                                                                                                             
+Current count: 28000, row: ARY05F28000                                                                                                                                                                             
+Current count: 29000, row: ARY05F29000                                                                                                                                                                             
+Current count: 30000, row: ARY05F30000                                                                                                                                                                             
+Current count: 31000, row: ARY05F31000                                                                                                                                                                             
+Current count: 32000, row: ARY05F32000                                                                                                                                                                             
+Current count: 33000, row: ARY05F33000                                                                                                                                                                             
+Current count: 34000, row: ARY05F34000                                                                                                                                                                             
+Current count: 35000, row: ARY05F35000                                                                                                                                                                             
+Current count: 36000, row: ARY05F36000                                                                                                                                                                             
+Current count: 37000, row: ARY05F37000                                                                                                                                                                             
+Current count: 38000, row: ARY05F38000                                                                                                                                                                             
+Current count: 39000, row: ARY05F39000                                                                                                                                                                             
+Current count: 40000, row: ARY05F40000                                                                                                                                                                             
+Current count: 41000, row: ARY06F41000                                                                                                                                                                             
+Current count: 42000, row: ARY06F42000                                                                                                                                                                             
+Current count: 43000, row: ARY06F43000                                                                                                                                                                             
+Current count: 44000, row: ARY06F44000                                                                                                                                                                             
+Current count: 45000, row: ARY06F45000                                                                                                                                                                             
+Current count: 46000, row: ARY06F46000                                                                                                                                                                             
+Current count: 47000, row: ARY06F47000                                                                                                                                                                             
+Current count: 48000, row: ARY06F48000                                                                                                                                                                             
+Current count: 49000, row: ARY06F49000                                                                                                                                                                             
+Current count: 50000, row: ARY06F50000                                                                                                                                                                             
+Current count: 51000, row: ARY06F51000                                                                                                                                                                             
+Current count: 52000, row: ARY06F52000                                                                                                                                                                             
+Current count: 53000, row: ARY06F53000                                                                                                                                                                             
+Current count: 54000, row: ARY06F54000                                                                                                                                                                             
+Current count: 55000, row: ARY06F55000                                                                                                                                                                             
+Current count: 56000, row: ARY06F56000                                                                                                                                                                             
+Current count: 57000, row: ARY06F57000                                                                                                                                                                             
+Current count: 58000, row: ARY06F58000                                                                                                                                                                             
+Current count: 59000, row: ARY06F59000                                                                                                                                                                             
+Current count: 60000, row: ARY06F60000                                                                                                                                                                             
+Current count: 61000, row: ARY07F61000                                                                                                                                                                             
+Current count: 62000, row: ARY07F62000                                                                                                                                                                             
+Current count: 63000, row: ARY07F63000                                                                                                                                                                             
+Current count: 64000, row: ARY07F64000                                                                                                                                                                             
+Current count: 65000, row: ARY07F65000                                                                                                                                                                             
+Current count: 66000, row: ARY07F66000                                                                                                                                                                             
+Current count: 67000, row: ARY07F67000                                                                                                                                                                             
+Current count: 68000, row: ARY07F68000                                                                                                                                                                             
+Current count: 69000, row: ARY07F69000                                                                                                                                                                             
+Current count: 70000, row: ARY07F70000                                                                                                                                                                             
+Current count: 71000, row: ARY07F71000                                                                                                                                                                             
+Current count: 72000, row: ARY07F72000                                                                                                                                                                             
+Current count: 73000, row: ARY07F73000                                                                                                                                                                             
+Current count: 74000, row: ARY07F74000                                                                                                                                                                             
+Current count: 75000, row: ARY07F75000                                                                                                                                                                             
+Current count: 76000, row: ARY07F76000                                                                                                                                                                             
+Current count: 77000, row: ARY07F77000                                                                                                                                                                             
+Current count: 78000, row: ARY07F78000                                                                                                                                                                             
+Current count: 79000, row: ARY07F79000                                                                                                                                                                             
+Current count: 80000, row: ARY07F80000                                                                                                                                                                             
+Current count: 81000, row: ARY08F80999                                                                                                                                                                             
+Current count: 82000, row: ARY08F81999                                                                                                                                                                             
+Current count: 83000, row: ARY08F82999                                                                                                                                                                             
+Current count: 84000, row: ARY08F83999                                                                                                                                                                             
+Current count: 85000, row: ARY08F84999                                                                                                                                                                             
+Current count: 86000, row: ARY08F85999                                                                                                                                                                             
+Current count: 87000, row: ARY08F86999                                                                                                                                                                             
+Current count: 88000, row: ARY08F87999                                                                                                                                                                             
+Current count: 89000, row: ARY08F88999                                                                                                                                                                             
+Current count: 90000, row: ARY08F89999                                                                                                                                                                             
+Current count: 91000, row: ARY08F90999                                                                                                                                                                             
+Current count: 92000, row: ARY08F91999                                                                                                                                                                             
+Current count: 93000, row: ARY08F92999                                                                                                                                                                             
+Current count: 94000, row: ARY08F93999                                                                                                                                                                             
+Current count: 95000, row: ARY08F94999                                                                                                                                                                             
+Current count: 96000, row: ARY08F95999                                                                                                                                                                             
+Current count: 97000, row: ARY08F96999                                                                                                                                                                             
+Current count: 98000, row: ARY08F97999                                                                                                                                                                             
+Current count: 99000, row: ARY08F98999                                                                                                                                                                             
+Current count: 100000, row: ARY08F99999                                                                                                                                                                            
+100001 row(s) in 7.2990 seconds
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+

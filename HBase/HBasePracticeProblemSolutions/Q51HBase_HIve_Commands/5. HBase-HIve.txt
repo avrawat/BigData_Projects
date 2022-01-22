@@ -1,0 +1,60 @@
+
+// create the table
+
+CREATE EXTERNAL TABLE IF NOT EXISTS airline08 (
+        ID string,
+        year string,
+        month string,
+        dom string,
+        dow string,
+        deptime string,
+        cdeptime string,
+        arrtime string,
+        carrtime string,
+        uniC string,
+        flightnum string,
+        tailnum string,
+        aetime string,
+        crstime string,
+        airtime string,
+        arrdelay string,
+        deldelay string,
+        origin string,
+        dest string,
+        distance string,
+        taxin string,
+        taxout string,
+        cancelled string,
+        cancelcode string,
+        diverted string,
+        carrdelay string,
+        weatherdelay string,
+        nasdelay string,
+        securitydelay string,
+        lateairdelay string)
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ','
+    TBLPROPERTIES 
+    ("skip.header.line.count"="1");
+
+
+
+// load the data, AirLineData.csv
+LOAD DATA INPATH '/user/ec2-user/input3' OVERWRITE INTO TABLE airline08;
+
+
+// create the mapping table
+
+create table airline_hbase(`key` string, `value` string)
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,R:count")
+TBLPROPERTIES ("hbase.table.name" = "airline_hive");
+
+
+// insert the total count
+insert overwrite table airline_hbase select cancelled, count(*) from airline08 where airline08.cancelled='1' group by cancelled;
+
+// insert the tag wise the data
+insert into table airline_hbase select airline08.cancelcode, count(cancelcode) from airline08 where cancelcode='A' or  cancelcode='B' or  cancelcode='C' or  cancelcode='D'  group by cancelcode;
+
+

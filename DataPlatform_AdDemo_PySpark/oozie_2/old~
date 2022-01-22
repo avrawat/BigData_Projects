@@ -1,0 +1,7 @@
+oozie.libpath = ${nameNode}/user/oozie/share/lib
+
+
+oozie.use.system.libpath=true
+
+oozie.libpath=${nameNode}/user/oozie/share/lib/sqoop/
+oozie.libpath=/user/oozie/libext

@@ -1,0 +1,6 @@
+DeleteData.class
+GetData.class
+DeleteTable.class
+ListTables.class
+PutData.class
+CreateTable.class

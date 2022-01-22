@@ -1,0 +1,22 @@
+
+
+on the server 
+    javac *.java
+    rmiregistry 1997 &
+    java server
+
+
+on the client
+	   java client
+
+// additional
+
+	rm *.class
+	kill -9 <pid>
+
+
+
+// if doesn't work (no route to host exception)
+// run -> 
+	ping <server if>
+

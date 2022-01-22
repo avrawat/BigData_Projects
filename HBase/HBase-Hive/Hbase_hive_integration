@@ -1,0 +1,189 @@
+
+-----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+																	1/2	HBase -----> Hive 
+																Mapping HBase table into Hive
+														HBase columns are mapped to Hive as an external tables
+
+-----------------------------------------------------------------------------------------------------------------------------
+1. exixting hbase table
+
+	hbase(main):003:0> scan 'Employee'
+	ROW                                    COLUMN+CELL                                                                                                    
+	 row1                                  column=Contact:Email, timestamp=1539351504529, value=abhc@gmail.com                                            
+	 row1                                  column=Contact:Mobile, timestamp=1539351504529, value=9876543210                                               
+	 row1                                  column=Employment:Company, timestamp=1539351504529, value=Google                                               
+	 row1                                  column=Employment:DOJ, timestamp=1539351504529, value=11:06:2018                                               
+	 row1                                  column=Employment:Designation, timestamp=1539351504529, value=Senior VP                                        
+	 row1                                  column=Personal:Age, timestamp=1539351504529, value=21                                                         
+	 row1                                  column=Personal:Gender, timestamp=1539351504529, value=M                                                       
+	 row1                                  column=Personal:Name, timestamp=1539351504529, value=Abhinav Rawat                                             
+	 row2                                  column=Contact:Email, timestamp=1539351504544, value=abc@gmail.com                                             
+	 row2                                  column=Contact:Mobile, timestamp=1539351504544, value=1234567890                                               
+	 row2                                  column=Employment:Company, timestamp=1539351504544, value=Singh Computers Inc.                                 
+	 row2                                  column=Employment:DOJ, timestamp=1539351504544, value=05:05:2009                                               
+	 row2                                  column=Employment:Designation, timestamp=1539351504544, value=Founder                                          
+	 row2                                  column=Personal:Age, timestamp=1539351504544, value=45                                                         
+	 row2                                  column=Personal:Gender, timestamp=1539351504544, value=M                                                       
+	 row2                                  column=Personal:Name, timestamp=1539351504544, value=Utkarsh Singh                                             
+	 row3                                  column=Contact:Email, timestamp=1539351504547, value=xyz@gmail.com                                             
+	 row3                                  column=Contact:Mobile, timestamp=1539351504547, value=9988776600                                               
+	 row3                                  column=Employment:Company, timestamp=1539351504547, value=Avengers                                             
+	 row3                                  column=Employment:DOJ, timestamp=1539351504547, value=05:05:2011                                               
+	 row3                                  column=Employment:Designation, timestamp=1539351504547, value=Captain                                          
+	 row3                                  column=Personal:Age, timestamp=1539351504547, value=90                                                         
+	 row3                                  column=Personal:Gender, timestamp=1539351504547, value=\x00\x00\x00M                                           
+	 row3                                  column=Personal:Name, timestamp=1539351504547, value=Steve Rogers                                              
+	3 row(s) in 0.1100 seconds
+-----------------------------------------------------------------------------------------------------------------------------
+2. create a Hive table and crate a map with Hbase table
+
+	hive > 
+create external table employee_hbase(id string, name string, age string, gender string, email string)
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+with serdeproperties ("hbase.columns.mapping"=":key,Personal:Name,Personal:Age,Personal:Gender,Contact:Email")
+tblproperties("hbase.table.name"="Employee");
+
+-----------------------------------------------------------------------------------------------------------------------------
+3. Check the hive table
+	 hive> select * from employee_hbase;
+	OK
+	row1	Abhinav Rawat	21	M	abhc@gmail.com
+	row2	Utkarsh Singh	45	M	abc@gmail.com
+	row3	Steve Rogers	90	M	xyz@gmail.com
+	Time taken: 0.099 seconds, Fetched: 3 row(s)
+
+-----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+																	2/2 Hive -----> HBase 
+																Mapping Hive table to HBase
+															Hive table is mapped to HBase table
+
+-----------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------									
+1. create a hive table
+
+	hive>
+		create table movies(`ID` string, `movies` string,`year` string)
+		ROW FORMAT DELIMITED
+		FIELDS TERMINATED BY '\u0059'
+		STORED AS TEXTFILE;
+
+-------------------------------------------------------------------------------------------
+2. load data into this table
+	hive>
+		load data local inpath '/home/ec2-user/HiveHBase/movies.txt'  overwrite into table movies;
+
+-------------------------------------------------------------------------------------------
+3. run some sql query on top it 
+
+	hive>
+		select * from movies;
+
+		select year, count(*) from movies group by year;
+
+-------------------------------------------------------------------------------------------
+4. create a new hive and hbase table map hive table column to hbase table     
+
+	hive>
+create table movies_count(`year` string, `count` int)
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,cf1:count")
+TBLPROPERTIES ("hbase.table.name" = "movies_hive");
+
+-------------------------------------------------------------------------------------------
+5. Hbase should be running in anoter window
+
+	hbase(main):003:0> list
+		TABLE                                                                                                                                                 
+		Employee                                                                                                                                              
+		ORDER_DETAILS                                                                                                                                         
+		SYSTEM.CATALOG                                                                                                                                        
+		SYSTEM.FUNCTION                                                                                                                                       
+		SYSTEM.SEQUENCE                                                                                                                                       
+		SYSTEM.STATS                                                                                                                                          
+		USER_DETAILS                                                                                                                                          
+		movies_hive  <------------------------                                                                                                                                      
+	8 row(s) in 0.0100 seconds
+
+------------------------------------------------------------------------------------------
+6. insert data into above created hive table which will eventually be map to our hbase table
+
+	hive> 
+		insert overwrite table movies_count select year, count(*) from movies group by year;
+
+-------------------------------------------------------------------------------------------
+7. check hbase table
+
+hbase(main):005:0> scan 'movies_hive'
+ROW                                    COLUMN+CELL                                                                                                    
+ 1922                                  column=cf1:count, timestamp=1539359758833, value=1                                                             
+ 1931                                  column=cf1:count, timestamp=1539359758833, value=1                                                             
+ 1933                                  column=cf1:count, timestamp=1539359758833, value=2                                                             
+ 1934                                  column=cf1:count, timestamp=1539359758833, value=2                                                             
+ 1935                                  column=cf1:count, timestamp=1539359758833, value=3                                                             
+ 1936                                  column=cf1:count, timestamp=1539359758833, value=2                                                             
+ 1937                                  column=cf1:count, timestamp=1539359758833, value=3                                                             
+ 1938                                  column=cf1:count, timestamp=1539359758833, value=1                                                             
+ 1939                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1940                                  column=cf1:count, timestamp=1539359758833, value=5                                                             
+ 1941                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1942                                  column=cf1:count, timestamp=1539359758833, value=2                                                             
+ 1943                                  column=cf1:count, timestamp=1539359758833, value=2                                                             
+ 1944                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1945                                  column=cf1:count, timestamp=1539359758833, value=1                                                             
+ 1946                                  column=cf1:count, timestamp=1539359758833, value=3                                                             
+ 1947                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1948                                  column=cf1:count, timestamp=1539359758833, value=2                                                             
+ 1949                                  column=cf1:count, timestamp=1539359758833, value=2                                                             
+ 1950                                  column=cf1:count, timestamp=1539359758833, value=5                                                             
+ 1951                                  column=cf1:count, timestamp=1539359758833, value=1                                                             
+ 1952                                  column=cf1:count, timestamp=1539359758833, value=2                                                             
+ 1953                                  column=cf1:count, timestamp=1539359758833, value=1                                                             
+ 1954                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1955                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1956                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1957                                  column=cf1:count, timestamp=1539359758833, value=5                                                             
+ 1958                                  column=cf1:count, timestamp=1539359758833, value=5                                                             
+ 1959                                  column=cf1:count, timestamp=1539359758833, value=3                                                             
+ 1960                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1961                                  column=cf1:count, timestamp=1539359758833, value=1                                                             
+ 1962                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1963                                  column=cf1:count, timestamp=1539359758833, value=3                                                             
+ 1964                                  column=cf1:count, timestamp=1539359758833, value=2                                                             
+ 1965                                  column=cf1:count, timestamp=1539359758833, value=3                                                             
+ 1966                                  column=cf1:count, timestamp=1539359758833, value=1                                                             
+ 1967                                  column=cf1:count, timestamp=1539359758833, value=3                                                             
+ 1968                                  column=cf1:count, timestamp=1539359758833, value=6                                                             
+ 1969                                  column=cf1:count, timestamp=1539359758833, value=2                                                             
+ 1970                                  column=cf1:count, timestamp=1539359758833, value=2                                                             
+ 1971                                  column=cf1:count, timestamp=1539359758833, value=6                                                             
+ 1973                                  column=cf1:count, timestamp=1539359758833, value=3                                                             
+ 1974                                  column=cf1:count, timestamp=1539359758833, value=5                                                             
+ 1975                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1976                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1977                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1978                                  column=cf1:count, timestamp=1539359758833, value=3                                                             
+ 1979                                  column=cf1:count, timestamp=1539359758833, value=7                                                             
+ 1980                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1981                                  column=cf1:count, timestamp=1539359758833, value=9                                                             
+ 1982                                  column=cf1:count, timestamp=1539359758833, value=12                                                            
+ 1983                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1984                                  column=cf1:count, timestamp=1539359758833, value=4                                                             
+ 1985                                  column=cf1:count, timestamp=1539359758833, value=7                                                             
+ 1986                                  column=cf1:count, timestamp=1539359758833, value=12                                                            
+ 1987                                  column=cf1:count, timestamp=1539359758833, value=9                                                             
+ 1988                                  column=cf1:count, timestamp=1539359758833, value=7                                                             
+ 1989                                  column=cf1:count, timestamp=1539359758833, value=12                                                            
+ 1990                                  column=cf1:count, timestamp=1539359758833, value=20                                                            
+ 1991                                  column=cf1:count, timestamp=1539359758833, value=18                                                            
+ 1992                                  column=cf1:count, timestamp=1539359758833, value=33                                                            
+ 1993                                  column=cf1:count, timestamp=1539359758833, value=98                                                            
+ 1994                                  column=cf1:count, timestamp=1539359758833, value=159                                                           
+ 1995                                  column=cf1:count, timestamp=1539359758833, value=174                                                           
+ 1996                                  column=cf1:count, timestamp=1539359758833, value=272                                                           
+ 1997                                  column=cf1:count, timestamp=1539359758833, value=230                                                           
+ 1998                                  column=cf1:count, timestamp=1539359758833, value=47                                                            
+ Year                                  column=cf1:count, timestamp=1539359758833, value=1                                                             
+68 row(s) in 0.1640 seconds
+

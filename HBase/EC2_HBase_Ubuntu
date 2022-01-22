@@ -1,0 +1,111 @@
+
+// HBase dependency version
+
+	hbase 1.2.0-cdh5.14.0	
+
+
+
+
+// The destination folder need to exist on ec2
+
+	scp -i ~/Spark_Abhinav/spark_abhinav.pem ~/Documents/Codes/OldCodes/DeleteRow.java  ec2-54-174-219-103.compute-1.amazonaws.com:~/codes/
+
+
+
+
+
+	scp -i ~/Spark_Abhinav/spark_abhinav.pem ~/Documents/Codes/OldCodes/mine/creatingTable.java  ec2-user@ec2-34-227-159-199.compute-1.amazonaws.com:~/codes/
+
+
+
+// downloading a file from ec2
+
+scp -i spark_abhinav.pem ec2-user@ec2-54-167-138-54.compute-1.amazonaws.com:~/codes/* 
+/home/abhinavrawat/Documents/
+
+
+
+// moving the contents from ec2-user folder to HBase folder on the root user
+
+
+	mv -v /home/ec2-user/codes/*	 /root/HBase/
+
+
+// compile the codes
+
+	javac -cp `hbase classpath` creatingTable.java 
+
+
+// run the class file
+
+	java -cp `hbase classpath` MyFirstHBaseTable
+
+
+// getting name of all dependency jars
+
+	root@] find / -name "hbase*.jar"
+
+
+*****************************************************************************************************
+
+
+	// Running the jar
+
+	//one youtube vide0
+ 	
+ 	hadoop jar ./myfile.jar mainclassName
+
+ 	// udemy
+
+ 	hadoop jar myfile.jar Driver.Main
+
+
+
+ 	// may be the right folder with all the jars
+
+ 	root]$ cd /usr/share/cmf/cdh5
+
+
+ 	// final
+
+ 	HADOOP_CLASSPATH=`hbase classpath` hadoop jar file.jar Driver
+
+
+
+
+// file to hadoop fs
+
+
+[ec2-user@ip-172-31-82-152 sep25]$ hadoop fs -mkdir input2
+[ec2-user@ip-172-31-82-152 sep25]$ hadoop fs -put movies.txt /user/ec2-user/input2
+[ec2-user@ip-172-31-82-152 sep25]$ hadoop fs -ls /user/ec2-user/input2
+
+
+
+
+// cloudrea blog
+
+[training@localhost java]$ javac -classpath `hbase classpath` MakeTable.java
+[training@localhost java]$ jar cvf MakeTable.jar MakeTable.class
+[training@localhost java]$ hadoop jar MakeTable.jar MakeTable	
+
+
+
+
+// running class file
+
+18/09/19 06:25:04 INFO zookeeper.ZooKeeper: Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+
+
+// jar created on the cloud
+
+18/09/19 06:22:24 INFO zookeeper.ZooKeeper: Client environment:java.library.path=/opt/cloudera/parcels/CDH-5.15.1-1.cdh5.15.1.p0.4/lib/hadoop/lib/native
+
+
+// maven jar 
+
+18/09/19 06:22:24 INFO zookeeper.ZooKeeper: Client environment:java.library.path=/opt/cloudera/parcels/CDH-5.15.1-1.cdh5.15.1.p0.4/lib/hadoop/lib/native
+
+
+
+
