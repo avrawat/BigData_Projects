@@ -18,8 +18,8 @@ Hue> Select * FROM electronics_jsondump_s3 LIMIT 10;
 [aws]
 [[aws_accounts]]
 [[[default]]]
-access_key_id=AKIAJ4YBBV2QX2J5CRJA
-secret_access_key=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
+access_key_id=23452342
+secret_access_key=2342/234
 region=us-east-1
 
 
